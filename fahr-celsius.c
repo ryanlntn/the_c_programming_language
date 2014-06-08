@@ -5,7 +5,7 @@
 #define STEP   20
 
 /* print Fahrenheit-Celsius table */
-main()
+int main()
 {
     int fahr;
 
