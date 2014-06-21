@@ -1,31 +1,47 @@
 #include <stdio.h>
 
+#define MAXWORDLEN 10
+#define IN          1
+#define OUT         0
+
 int main()
 {
-    int c, i, j, word_length;
-    int lengths[25];
+  int c = EOF;
+  int i = 0;
+  int j = 0;
+  int arr_of_len[MAXWORDLEN + 1];
+  int state = IN;
+  int nc = 0;
 
-    word_length = 0;
-    for (i = 0; i < 25; ++i) {
-        lengths[i] = 0;
+  for (i = 0; i <= MAXWORDLEN; ++i) {
+    arr_of_len[i] = 0;
+  }
+
+  while((c = getchar()) != EOF) {
+    ++nc;
+
+    if (c == ' ' || c == '\t' || c == '\n') {
+      state = OUT;
+      --nc;
     }
 
-    while ((c = getchar()) != EOF) {
-        if (c == ' ' || c == '\n' || c == '\t') {
-            if (word_length > 0) {
-                ++lengths[word_length];
-                word_length = 0;
-            }
-        } else {
-            ++word_length;
-        }
+    if (state == OUT) {
+      if (nc != 0 && nc <= MAXWORDLEN) {
+        ++arr_of_len[nc];
+      }
+
+      state = IN;
+      nc = 0;
     }
-    
-    for (i = 1; i < 25; ++i) {
-        printf("%d: ", i); 
-        for (j = 0; j < lengths[i]; ++j) {
-            printf("*");
-        }
-        printf("\n");
+  }
+
+  for (i=1; i <= MAXWORDLEN; ++i) {
+    printf("|%2d| ", i);
+    for (j = 0; j < arr_of_len[i]; ++j) {
+      putchar('*');
     }
+    putchar('\n');
+  }
+
+  return 0;
 }
